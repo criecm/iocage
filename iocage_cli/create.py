@@ -224,6 +224,7 @@ def cli(
                       basejail=basejail, thickjail=thickjail, empty=empty,
                       thickconfig=thickconfig, clone_basejail=clone_basejail)
     except (RuntimeError, ioc_exceptions.JailMissingConfiguration) as err:
+        print(f'Error in create.py: error {err}')
         if template and "Dataset" in str(err) or str(
                 err).startswith('Template'):
             # We want to list the available templates first

@@ -170,10 +170,11 @@ class IOCCreate(object):
                             )
                     else:
                         cloned_release = "EMPTY"
-            except (IOError, OSError, FileNotFoundError, UnboundLocalError):
+            except (IOError, OSError, FileNotFoundError, UnboundLocalError) as err:
                 # Unintuitevly a missing template will throw a
                 # UnboundLocalError as the missing file will kick the
                 # migration routine for zfs props. We don't need that :)
+                print(f'error in ioc_create: {err}')
 
                 if self.template:
                     raise RuntimeError(f"Template: {self.release} not found!")
@@ -228,7 +229,8 @@ class IOCCreate(object):
 
             try:
                 su.check_call(snap_cmd, stderr=su.PIPE)
-            except su.CalledProcessError:
+            except su.CalledProcessError as err:
+                print(f'error in ioc_create, CalledProcessError {err}')
                 raise RuntimeError(f'Template: {jail_uuid} not found!')
 
             if not self.thickjail:
