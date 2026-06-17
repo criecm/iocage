@@ -14,7 +14,7 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   builddocs:
-    name: Check if release tag and version in pyproject.toml match
+    name: get version from pyproject.toml and push docs to pages
     runs-on: ubuntu-latest
     environment:
       name: github-pages
@@ -37,6 +37,6 @@ jobs:
       - id: deployment
         uses: sphinx-notes/pages@v3
         with:
-          version: ${{ steps.computed-tag.outputs.tag }}
+          sphinx_build_options: -b html -D version=${{ steps.computed-tag.outputs.tag }} -D release=${{ steps.computed-tag.outputs.tag }}
 
     
